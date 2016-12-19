@@ -1,0 +1,10 @@
+secrets.json
+settings.json
+sandbox
+data
+.idea
+.ipynb_checkpoints
+*.csv
+*.pdf
+*.pickle
+*.model
