@@ -107,7 +107,7 @@ def get_raw_data_version_path(version):
 def get_reports_version_path(version):
     """
     Retrieves the path where the reports are going to be saved
-    :param version: version of the data which is intended to be loaded. If not specified, the last version name is
+    :param version: version of the data which is intended to be saved. If not specified, the last version name is
     retrieved from the settings.json file and used to build the path (str|unicode|None).
     :return: the path of the data requested (str|unicode).
     """
@@ -115,3 +115,16 @@ def get_reports_version_path(version):
     if not version:
         version = get_last_data_version()
     return os.path.join(get_reports_path(), version)
+
+@_is_output_path
+def get_submissions_version_path(version):
+    """
+    Retrieves the path where the submissions are going to be saved
+    :param version: version of the data which is intended to be saved. If not specified, the last version name is
+    retrieved from the settings.json file and used to build the path (str|unicode|None).
+    :return: the path of the data requested (str|unicode).
+    """
+    from utilities import get_last_data_version
+    if not version:
+        version = get_last_data_version()
+    return os.path.join(get_submissions_path(), version)

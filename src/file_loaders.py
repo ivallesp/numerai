@@ -26,7 +26,8 @@ def load_tournament_data(version=None):
     """
     from common_paths import get_raw_data_version_path
     path = get_raw_data_version_path(version)
-    df = pd.read_csv(os.path.join(path, "numerai_tournament_data.csv"), sep=",", encoding="utf-8", index_col=False)
+    df = pd.read_csv(os.path.join(path, "numerai_tournament_data.csv"), sep=",", encoding="utf-8", index_col=False,
+                     dtype={"t_id": str})
     assert df.isnull().sum().sum() == 0
     assert df.duplicated().sum() == 0
     assert "target" not in df.columns

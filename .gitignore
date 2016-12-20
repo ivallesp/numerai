@@ -1,10 +1,11 @@
 secrets.json
 settings.json
 sandbox
-data
+data/raw/2*
+data/reports/2*
+data/submissions/2*
 .idea
 .ipynb_checkpoints
-*.csv
 *.pdf
 *.pickle
 *.model
