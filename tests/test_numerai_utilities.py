@@ -62,3 +62,34 @@ class TestNumeraiUtilities(TestCase):
         assert df.shape == (10, 2)
         assert df.columns.tolist() == ["t_id", "probability"]
         assert df.equals(pd.DataFrame({"t_id": indices, "probability": probs})[["t_id", "probability"]])
+
+    def test_store_score(self):
+        score = 0.655321
+        alias = "foo"
+        version = "trial"
+        output_filepath = os.path.join(get_submissions_version_path(version), "upload_history.jl")
+        if os.path.exists(output_filepath):
+            shutil.rmtree(os.path.split(output_filepath)[0])
+        store_score(version=version, alias=alias, score=score)
+        assert os.path.exists(output_filepath)
+        upload_history = json.load(open(output_filepath))
+        shutil.rmtree(os.path.split(output_filepath)[0])
+        assert upload_history["score"] == score
+        assert upload_history["alias"] == alias
+        assert upload_history["version"] == version
+
+    def test_get_best_score(self):
+        version = "trial"
+        output_filepath = os.path.join(get_submissions_version_path(version), "upload_history.jl")
+        if os.path.exists(output_filepath):
+            shutil.rmtree(os.path.split(output_filepath)[0])
+        store_score(version=version, alias="sub1", score=6)
+        store_score(version=version, alias="sub2", score=3)
+        store_score(version=version, alias="sub3", score=1)
+        store_score(version=version, alias="sub4", score=9)
+        store_score(version=version, alias="sub5", score=1.5)
+        assert os.path.exists(output_filepath)
+        alias, score = get_best_score(version=version)
+        assert alias == "sub3"
+        assert score == 1
+        shutil.rmtree(get_submissions_version_path(version))

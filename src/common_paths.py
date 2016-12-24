@@ -121,7 +121,7 @@ def get_reports_version_path(version):
     return os.path.join(get_reports_path(), version)
 
 @_is_output_path
-def get_submissions_version_path(version):
+def get_submissions_version_path(version=None):
     """
     Retrieves the path where the submissions are going to be saved
     :param version: version of the data which is intended to be saved. If not specified, the last version name is
@@ -132,3 +132,15 @@ def get_submissions_version_path(version):
     if not version:
         version = get_last_data_version()
     return os.path.join(get_submissions_path(), version)
+
+
+def get_submission_filepath(version, alias):
+    """
+    Retrieves the path of the submissios given by a version and an alias.
+    :param version: version of the data which is intended to be accessed (str|unicode).
+    :param alias: version of the submission which is intended to be accessed (str|unicode).
+    :return: the path of the submission file (str|unicode)
+    """
+    path = get_submissions_version_path(version)
+    path = os.path.join(path, "submission_{0}.csv".format(alias))
+    return path

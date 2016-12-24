@@ -3,6 +3,7 @@ import os
 import datetime
 import logging
 import pandas as pd
+import numpy as np
 
 __author__ = "ivallesp"
 
@@ -79,7 +80,7 @@ def build_submission(version, indices, probs, alias, replace=False):
     logger.info("Submission stored successfully in: {0}".format(path))
 
 
-def upload_submission(version, alias):
+def upload_submission(version, alias, restore_best_submission=True, store_scores=True):
     """
     Given a submission, uploads it and returns the score obtained.
     :param version: Indices to be put in the submission (str|unicode)
@@ -89,11 +90,11 @@ def upload_submission(version, alias):
     """
     logger = logging.getLogger(__name__)
     logger.info("Requested numer.ai data submission upload: {0}, {1}".format(version, alias))
-    from src.common_paths import get_submissions_version_path, get_project_path
+    from src.common_paths import get_submissions_version_path, get_project_path, get_submission_filepath
     with open(os.path.join(get_project_path(), "NumerAPI", "secrets.json")) as f:
         secrets = json.load(f)
     username = secrets["username"]
-    path = os.path.join(get_submissions_version_path(version), "submission_{0}.csv".format(alias))
+    path = os.path.join(get_submission_filepath(version, alias))
     logger.info("Using submission path: {0}".format(path))
     assert os.path.exists(path)
     n_api = get_numerai_api_access()
@@ -102,5 +103,52 @@ def upload_submission(version, alias):
     logger.info("Submission uploader returned status {0}".format(status))
     logger.info("Requesting score to the Numer.ai API".format(status))
     score = n_api.get_scores(username)[0][0]
-    logger.info("Score obtained: {0}".format(score))
+    logger.info("Score obtained: {0}. Storing it.".format(score))
+    if restore_best_submission:
+        best_alias, best_score = get_best_score(version=version)
+        if best_score < score:
+            logger.info("Not the best submission... restoring the best one ({0}, {1})".format(version, best_alias))
+            _, __ = upload_submission(version, best_alias, restore_best_submission=False, store_scores=False)
+        else:
+            logger.info("Best score obtained! Score = {0}".format(score))
+    if store_scores:
+        store_score(version=version, alias=alias, score=score)
     return status, score
+
+def store_score(version, alias, score):
+    """
+    Given a version and an alias, this function is responsible for keeping track of the scores when uploading the
+    generated submissions.
+    :param version: Indices to be put in the submission (str|unicode)
+    :param alias: Unique alias of the submission. Used to build the csv name in order to identify the submission among
+    the other ones (str|unicode)
+    :param score: score obtained (float)
+    :return: None (Void)
+    """
+    logger = logging.getLogger(__name__)
+    logger.info("Request submission score storing for submission {0}-{1}: {2}".format(version, alias, score))
+    from src.common_paths import get_submissions_version_path, get_project_path
+    filepath = os.path.join(get_submissions_version_path(version), "upload_history.jl")
+    score_line = json.dumps({"version": version, "alias": alias, "score": score})
+    with open(filepath, mode="a") as f:
+        f.write(score_line + "\n")
+
+
+def get_best_score(version):
+    """
+    Given an existing version, retrieves the alias and score of the best score obtained
+    :param version: version to be evaluated (str|unicode)
+    :return: alias, score (str, float)
+    """
+    logger = logging.getLogger(__name__)
+    logger.info("Request best submission evaluation for version {0}".format(version))
+    from src.common_paths import get_submissions_version_path, get_project_path
+    filepath = os.path.join(get_submissions_version_path(version), "upload_history.jl")
+    if not os.path.exists(filepath):
+        return None, np.Inf
+    with open(filepath) as f:
+        upload_history = [json.loads(x) for x in f.read().strip().split("\n")]
+    best_submission = min(upload_history, key=lambda x:x["score"])
+    alias, score = best_submission["alias"], best_submission["score"]
+    logger.info("Best submission found: {0}, {1}, {2}".format(version, alias, score))
+    return alias, score

@@ -8,7 +8,7 @@ def get_last_data_version():
     with open("./settings.json") as f:
         settings = json.load(f)
         version = settings["last_data_version"]
-    logger.info("Retrieved last data version name: {}")
+    logger.info("Retrieved last data version name: {}".format(version))
     return version
 
 

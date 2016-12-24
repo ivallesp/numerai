@@ -9,7 +9,7 @@ from sklearn.pipeline import Pipeline
 __author__ = "ivallesp"
 
 
-def get_general_glm(n_jobs_model, random_seed=655321):
+def get_general_glm(n_jobs_model=-1, random_seed=655321):
     """
     Logistic Regression gridsearch (28 parameter sets)
     :param n_jobs_model: number of jobs (model passed as a model parameter (int)
@@ -28,7 +28,7 @@ def get_general_glm(n_jobs_model, random_seed=655321):
     return model, params
 
 
-def get_general_glmnet(n_jobs_model, random_seed=655321):
+def get_general_glmnet(n_jobs_model=-1, random_seed=655321):
     """
     ElasticNet gridsearch for classification (64 parameter sets)
     :param n_jobs_model: number of jobs (model passed as a model parameter (int)
@@ -36,7 +36,7 @@ def get_general_glmnet(n_jobs_model, random_seed=655321):
     :return: model, parameters
     """
     logger = logging.getLogger(__name__)
-    logger.info("Requested GLMNET general grid search. 64 parameters sets retrieved")
+    logger.info("Requested GLMNET general grid search for classification. 64 parameters sets retrieved")
     from sklearn.linear_model import SGDClassifier
     model = Pipeline([("stdsc", StandardScaler()), ("glmnet", SGDClassifier())])
     params = {"glmnet__loss": ["log"],
@@ -48,7 +48,7 @@ def get_general_glmnet(n_jobs_model, random_seed=655321):
     return model, params
 
 
-def get_general_tree(n_jobs_model, random_seed=655321):
+def get_general_tree(n_jobs_model=-1, random_seed=655321):
     """
     DecisionTreeClassifier gridsearch for classification (72 parameter sets)
     :param n_jobs_model: number of jobs (model passed as a model parameter (int)
@@ -56,7 +56,7 @@ def get_general_tree(n_jobs_model, random_seed=655321):
     :return: model, parameters
     """
     logger = logging.getLogger(__name__)
-    logger.info("Requested decisionTreeClassifier general grid search. 72 parameters sets retrieved")
+    logger.info("Requested TREE general grid search for classification. 72 parameters sets retrieved")
     from sklearn.tree import DecisionTreeClassifier
     model = Pipeline([("tree", DecisionTreeClassifier())])
     params = {"tree__criterion": ["gini", "entropy"],
@@ -68,7 +68,7 @@ def get_general_tree(n_jobs_model, random_seed=655321):
     return model, params
 
 
-def get_general_knn(n_jobs_model, random_seed=655321):
+def get_general_knn(n_jobs_model=-1, random_seed=655321):
     """
     KNN gridsearch for classification (40 parameter sets)
     :param n_jobs_model: number of jobs (model passed as a model parameter (int)
@@ -76,7 +76,7 @@ def get_general_knn(n_jobs_model, random_seed=655321):
     :return: model, parameters
     """
     logger = logging.getLogger(__name__)
-    logger.info("Requested KNN general grid search. 40 parameters sets retrieved")
+    logger.info("Requested KNN general grid search for classification. 40 parameters sets retrieved")
     from sklearn.neighbors import KNeighborsClassifier
     model = Pipeline([("stdsc", StandardScaler()), ("knn", KNeighborsClassifier())])
     params = {"knn__n_neighbors": [1, 2, 3, 5, 8, 13, 21, 34, 55, 89],
@@ -86,7 +86,7 @@ def get_general_knn(n_jobs_model, random_seed=655321):
     return model, params
 
 
-def get_general_svc(n_jobs_model, random_seed=655321):
+def get_general_svc(n_jobs_model=-1, random_seed=655321):
     """
     SVM gridsearch for classification (60 parameter trials)
     :param n_jobs_model: number of jobs (model passed as a model parameter (int)
@@ -94,7 +94,7 @@ def get_general_svc(n_jobs_model, random_seed=655321):
     :return: model, parameters
     """
     logger = logging.getLogger(__name__)
-    logger.info("Requested KNN general grid search. 60 parameters sets retrieved")
+    logger.info("Requested SVC general grid search for classification. 60 parameters sets retrieved")
     from sklearn.svm import SVC
     model = Pipeline([("stdsc", StandardScaler()), ("svc", SVC())])
     params = [{"svc__kernel": ["rbf"],
@@ -118,7 +118,7 @@ def get_general_svc(n_jobs_model, random_seed=655321):
     return model, params
 
 
-def get_general_rf(n_jobs_model, random_seed=655321):
+def get_general_rf(n_jobs_model=-1, random_seed=655321):
     """
     RandomForest gridsearch for classification (24 parameter trials)
     :param n_jobs_model: number of jobs (model passed as a model parameter (int)
@@ -126,7 +126,7 @@ def get_general_rf(n_jobs_model, random_seed=655321):
     :return: model, parameters
     """
     logger = logging.getLogger(__name__)
-    logger.info("Requested RF general grid search. 24 parameters sets retrieved")
+    logger.info("Requested RF general grid search for classification. 24 parameters sets retrieved")
     from sklearn.ensemble import RandomForestClassifier
     model = Pipeline([("rf", RandomForestClassifier())])
     params = [{"rf__n_estimators": [2000],
@@ -139,7 +139,7 @@ def get_general_rf(n_jobs_model, random_seed=655321):
     return model, params
 
 
-def get_general_et(n_jobs_model, random_seed=655321):
+def get_general_et(n_jobs_model=-1, random_seed=655321):
     """
     ExtraTrees gridsearch for classification (48 parameter trials)
     :param n_jobs_model: number of jobs (model passed as a model parameter (int)
@@ -147,7 +147,7 @@ def get_general_et(n_jobs_model, random_seed=655321):
     :return: model, parameters
     """
     logger = logging.getLogger(__name__)
-    logger.info("Requested ET general grid search. 48 parameters sets retrieved")
+    logger.info("Requested ET general grid search for classification. 48 parameters sets retrieved")
     from sklearn.ensemble import ExtraTreesClassifier
     model = Pipeline([("et", ExtraTreesClassifier())])
     params = [{"et__n_estimators": [2000],
@@ -160,7 +160,7 @@ def get_general_et(n_jobs_model, random_seed=655321):
     return model, params
 
 
-def get_general_nb(n_jobs_model, random_seed=655321):
+def get_general_nb(n_jobs_model=-1, random_seed=655321):
     """
     Naive Bayes gridsearch for classification (1 parameter trial)
     :param n_jobs_model: number of jobs (model passed as a model parameter (int)
@@ -168,14 +168,14 @@ def get_general_nb(n_jobs_model, random_seed=655321):
     :return: model, parameters
     """
     logger = logging.getLogger(__name__)
-    logger.info("Requested NB general grid search. 1 parameters set retrieved")
+    logger.info("Requested NB general grid search for classification. 1 parameters set retrieved")
     from sklearn.naive_bayes import GaussianNB
     model = Pipeline([("stdsc", StandardScaler()), ("nb", GaussianNB())])
     params = [{}]
     return model, params
 
 
-def get_general_mlp(n_jobs_model, random_seed=655321):
+def get_general_mlp(n_jobs_model=-1, random_seed=655321):
     """
     Multi Layer Perceptron gridsearch for classification (64 parameter sets)
     :param n_jobs_model: number of jobs (model passed as a model parameter (int)
@@ -183,7 +183,7 @@ def get_general_mlp(n_jobs_model, random_seed=655321):
     :return: model, parameters
     """
     logger = logging.getLogger(__name__)
-    logger.info("Requested MLP general grid search. 64 parameters sets retrieved")
+    logger.info("Requested MLP general grid search for classification. 64 parameters sets retrieved")
     from sklearn.neural_network import MLPClassifier
     model = Pipeline([("stdsc", StandardScaler()), ("mlp", MLPClassifier())])
     params = {"mlp__hidden_layer_sizes": [(500, 250), (200, 100), (100, 20), (100, 50), (100, 100), (50, 50), (50, 20)],

@@ -19,7 +19,7 @@ def train_model_with_gridsearch(X, y, estimator, param_grid, scoring="neg_log_lo
     logger.info("Training the requested estimator using gridsearch")
 
     grid_search = GridSearchCV(estimator=estimator, param_grid=param_grid, scoring=scoring, cv=cv, n_jobs=n_jobs,
-                               refit=False, verbose=verbose, return_train_score=True)
+                               refit=True, verbose=verbose, return_train_score=True)
 
     trained_model = grid_search.fit(X, y)
     results = trained_model.cv_results_
@@ -28,6 +28,5 @@ def train_model_with_gridsearch(X, y, estimator, param_grid, scoring="neg_log_lo
     for key in results:
         if type(results[key]) in [np.ndarray, np.array, np.ma.core.MaskedArray]:
             results[key] = results[key].tolist()
-
     return trained_model, results
 
