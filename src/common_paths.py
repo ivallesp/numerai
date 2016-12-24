@@ -85,6 +85,11 @@ def get_submissions_path():
 
 
 @_is_output_path
+def get_logs_path():
+    return os.path.join(get_project_path(), "logs")
+
+
+@_is_output_path
 def get_reports_path():
     return os.path.join(get_data_path(), "reports")
 
@@ -101,7 +106,6 @@ def get_raw_data_version_path(version):
     if not version:
         version = get_last_data_version()
     return os.path.join(get_raw_data_path(), version)
-
 
 @_is_output_path
 def get_reports_version_path(version):

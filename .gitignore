@@ -9,3 +9,4 @@ data/submissions/2*
 *.pdf
 *.pickle
 *.model
+*.log

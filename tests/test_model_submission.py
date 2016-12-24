@@ -2,8 +2,8 @@ from unittest import TestCase
 
 import os
 
-
 __author__ = "ivallesp"
+
 
 class TestModelSubmission(TestCase):
     def test_get_numerai_api_access(self):
