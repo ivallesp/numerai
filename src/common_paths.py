@@ -105,7 +105,7 @@ def get_raw_data_version_path(version):
     from utilities import get_last_data_version
     if not version:
         version = get_last_data_version()
-    return os.path.join(get_raw_data_path(), version)
+    return os.path.join(get_raw_data_path(), version,"numerai_datasets")
 
 @_is_output_path
 def get_reports_version_path(version):

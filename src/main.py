@@ -20,8 +20,7 @@ setup_logging_environment()
 # Download Data
 if not os.listdir(get_raw_data_version_path(version)):
     status = download_last_numerai_data(version_name=version)
-    generate_profiling_reports()
-    generate_correlation_matrices()
+    generate_correlation_matrices(version_name=version)
 
 # Prepare data
 df_train, df_test = load_numerai_data(version)
@@ -76,7 +75,7 @@ model, params = get_general_knn()
 models.append(model)
 param_grids.append(params)
 
-aliases.append("MLPGeneral")
+aliases.append("SVMGeneral")
 model, params = get_general_svc()
 models.append(model)
 param_grids.append(params)
