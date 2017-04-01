@@ -30,16 +30,16 @@ def setup_logging_environment(default_path='logging.json', default_level=logging
     logger.info("Logger initialized! Storing them in path {}".format(get_logs_path()))
 
 
-def handle_exception(exc_type, exc_value, exc_traceback):
-    """
-    Function used to dump write the exceptions into the error log.
-    """
-    logger = logging.getLogger("excepthook")
-    if issubclass(exc_type, KeyboardInterrupt):
-        sys.__excepthook__(exc_type, exc_value, exc_traceback)
-        return
-    logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+#def handle_exception(exc_type, exc_value, exc_traceback):
+#    """
+#    Function used to dump write the exceptions into the error log.
+#    """
+#    logger = logging.getLogger("excepthook")
+#    if issubclass(exc_type, KeyboardInterrupt):
+#        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+#        return
+#    logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
 
 
-sys.excepthook = handle_exception
+#sys.excepthook = handle_exception
 

@@ -94,7 +94,7 @@ def get_reports_path():
     return os.path.join(get_data_path(), "reports")
 
 
-@_is_input_path
+@_is_output_path
 def get_raw_data_version_path(version):
     """
     Retrieves the path where the raw data is saved.

@@ -13,7 +13,7 @@ from src.numerai_utilities import build_submission, upload_submission
 __author__ = "ivallesp"
 
 
-version = "20161224"
+version = "last"
 
 setup_logging_environment()
 
@@ -24,7 +24,7 @@ if not os.listdir(get_raw_data_version_path(version)):
     generate_correlation_matrices()
 
 # Prepare data
-df_train, df_test = load_numerai_data()
+df_train, df_test = load_numerai_data(version)
 df_whole = df_train.copy()
 df_dev = df_train.sample(frac=0.1, random_state=655321)
 df_train = df_train.drop(df_dev.index)
