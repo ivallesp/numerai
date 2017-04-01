@@ -1,6 +1,8 @@
 secrets.json
 settings.json
 sandbox
+data
+nbs
 data/raw/2*
 data/reports/2*
 data/submissions/2*
@@ -10,3 +12,4 @@ data/submissions/2*
 *.pickle
 *.model
 *.log
+*.pyc
