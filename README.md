@@ -35,4 +35,4 @@ All contributions are welcome. In the following lines, a set of potential next s
 - Implement a stacker to combine the models
 
 ## License
-...
+This project has been licensed under MIT agreement. Please, read the `LICENSE` file for further details. Copyright (c) 2018 Iván Vallés Pérez
